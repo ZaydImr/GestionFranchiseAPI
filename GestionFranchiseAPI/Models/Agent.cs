@@ -9,6 +9,7 @@ namespace GestionFranchiseAPI.Models
     {
         public int IdAgent { get; set; }
         public int IdFranchise { get; set; }
+        public string Login { get; set; }
 
         public virtual Franchise IdFranchiseNavigation { get; set; }
     }

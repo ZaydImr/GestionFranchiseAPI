@@ -26,7 +26,7 @@ namespace GestionFranchiseAPI.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("workstation id=GestionFranchise.mssql.somee.com;packet size=4096;user id=PlutoR47_SQLLogin_1;pwd=7joobsaxxh;data source=GestionFranchise.mssql.somee.com;persist security info=False;initial catalog=GestionFranchise");
             }
         }
@@ -45,6 +45,12 @@ namespace GestionFranchiseAPI.Models
                 entity.Property(e => e.IdAgent).HasColumnName("idAgent");
 
                 entity.Property(e => e.IdFranchise).HasColumnName("idFranchise");
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("login");
 
                 entity.HasOne(d => d.IdFranchiseNavigation)
                     .WithMany(p => p.Agents)
