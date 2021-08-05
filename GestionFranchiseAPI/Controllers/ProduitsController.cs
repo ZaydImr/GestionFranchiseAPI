@@ -61,16 +61,29 @@ namespace GestionFranchiseAPI
         }
 
 
-        // PUT mise a jour pour un utilisateur
-        [HttpPut]
-        public void Put([FromBody] Utilisateur utilisateur)
+        // PUT mise a jour pour un produit
+        [HttpPut("{login}")]
+        public void Put(string login,[FromBody] Produit produitF)
         {
             var db = new GestionFranchiseContext();
-            db.Utilisateurs.Update(utilisateur);
+
+            int id = produitF.IdProduit;
+            Produit produitB = db.Produits.FirstOrDefault(prod => prod.IdProduit == id);
+
+            db = new GestionFranchiseContext();
+            db.Update(produitF);
+
+            Command com = new Command();
+            com.IdProduit = produitF.IdProduit;
+            com.Login = login;
+            com.QteModified = produitF.QteProduit - produitB.QteProduit;
+            com.DateCommand = DateTime.UtcNow;
+
+            db.Commands.Add(com);
             db.SaveChanges();
         }
 
-        // DELETE suppression d'un utilisateur depant au type de compte
+        // DELETE suppression d'un produit
         [HttpDelete("{login}+{id}")]
         public void Delete(string login,int id)
         {
