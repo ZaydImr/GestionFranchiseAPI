@@ -18,6 +18,7 @@ namespace GestionFranchiseAPI.Models
         }
 
         public virtual DbSet<Agent> Agents { get; set; }
+        public virtual DbSet<Command> Commands { get; set; }
         public virtual DbSet<Franchise> Franchises { get; set; }
         public virtual DbSet<Produit> Produits { get; set; }
         public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
@@ -59,6 +60,42 @@ namespace GestionFranchiseAPI.Models
                     .HasConstraintName("FK__Agent__idFranchi__49C3F6B7");
             });
 
+            modelBuilder.Entity<Command>(entity =>
+            {
+                entity.HasKey(e => e.IdCommand)
+                    .HasName("PK__Command__0289890AA354EEDD");
+
+                entity.ToTable("Command");
+
+                entity.Property(e => e.IdCommand).HasColumnName("idCommand");
+
+                entity.Property(e => e.DateCommand)
+                    .HasColumnType("date")
+                    .HasColumnName("dateCommand");
+
+                entity.Property(e => e.IdProduit).HasColumnName("idProduit");
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("login");
+
+                entity.Property(e => e.QteModified).HasColumnName("qteModified");
+
+                entity.HasOne(d => d.IdProduitNavigation)
+                    .WithMany(p => p.Commands)
+                    .HasForeignKey(d => d.IdProduit)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Command__idProdu__4F7CD00D");
+
+                entity.HasOne(d => d.LoginNavigation)
+                    .WithMany(p => p.Commands)
+                    .HasForeignKey(d => d.Login)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Command__login__5070F446");
+            });
+
             modelBuilder.Entity<Franchise>(entity =>
             {
                 entity.HasKey(e => e.IdFranchise)
@@ -91,6 +128,8 @@ namespace GestionFranchiseAPI.Models
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("nameProduit");
+
+                entity.Property(e => e.QteProduit).HasColumnName("qteProduit");
 
                 entity.HasOne(d => d.IdFranchiseNavigation)
                     .WithMany(p => p.Produits)
