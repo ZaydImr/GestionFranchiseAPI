@@ -23,9 +23,18 @@ namespace GestionFranchiseAPI
 
         // GET a specified user by his login and his password
         [HttpGet("{login}+{password}")]
-        public IEnumerable<Utilisateur> Get(string login,string password)
+        public Utilisateur Get(string login,string password)
         {
-            return new GestionFranchiseContext().Utilisateurs.Where(util=>util.Login == login && util.Password == password ).ToList();
+            Utilisateur utilisateur = new GestionFranchiseContext().Utilisateurs.FirstOrDefault(util => util.Login == login );
+            if (utilisateur != null && utilisateur.Password != password)
+                utilisateur = null;
+            return utilisateur;
+        }
+        // GET user by login
+        [HttpGet("user/{login}")]
+        public Utilisateur GetOne(string login)
+        {
+            return new GestionFranchiseContext().Utilisateurs.FirstOrDefault(util => util.Login == login);
         }
 
         // GET all the users by a specified type

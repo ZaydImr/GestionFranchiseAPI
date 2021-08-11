@@ -32,6 +32,7 @@ namespace GestionFranchiseAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GestionFranchiseAPI", Version = "v1" });
             });
+            services.AddCors(option => option.AddDefaultPolicy(builder => builder.WithOrigins("http://localhost:3000/").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +50,7 @@ namespace GestionFranchiseAPI
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
