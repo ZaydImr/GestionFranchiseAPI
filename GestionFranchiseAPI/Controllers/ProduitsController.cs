@@ -87,29 +87,21 @@ namespace GestionFranchiseAPI
         [HttpDelete("{login}+{id}")]
         public void Delete(string login,int id)
         {
-            Produit produit = null;
             var db = new GestionFranchiseContext();
-            List<Utilisateur> utilisateurs = db.Utilisateurs.Where(util=>util.Login == login).ToList();
-            List<Produit> produits = db.Produits.Where(prod => prod.IdProduit == id).ToList();
-            foreach (Produit prod in produits)
-            {
-                produit = prod;
-            }
+            Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(util=>util.Login == login);
+            Produit produit = db.Produits.FirstOrDefault(prod => prod.IdProduit == id);
             if(produit !=null)
             {
-                foreach (Utilisateur utilisateur in utilisateurs)
+                if (utilisateur.TypeUtilisateur == "Franchise" || utilisateur.TypeUtilisateur == "Administrateur")
                 {
-                    if (utilisateur.TypeUtilisateur == "Franchise" || utilisateur.TypeUtilisateur == "Administrateur")
+                    if (produit.IdFranchise == utilisateur.IdType || utilisateur.IdType == 0)
                     {
-                        if (produit.IdFranchise == utilisateur.IdType || utilisateur.IdType == 0)
-                        {
                             db.Produits.Remove(produit);
-                        }
                     }
                 }
             }
-
             db.SaveChanges();
+       
         }
     }
 }

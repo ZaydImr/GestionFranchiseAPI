@@ -20,5 +20,17 @@ namespace GestionFranchiseAPI
         {
             return new GestionFranchiseContext().Agents.FirstOrDefault(agent=>agent.Login==login);   
         }
+        // GET agents by a specified idFranchise
+        [HttpGet("franchise/{idFranchise}")]
+        public IEnumerable<Utilisateur> Get(int idFranchise)
+        {
+            List<Utilisateur> utilisateurs = new List<Utilisateur>();
+            List<Agent> agents = new GestionFranchiseContext().Agents.Where(ag => ag.IdFranchise == idFranchise).ToList();
+            foreach (Agent agent in agents)
+            {
+                utilisateurs.Add(new GestionFranchiseContext().Utilisateurs.FirstOrDefault(util => util.IdType == agent.IdAgent));
+            }
+            return utilisateurs;
+        }
     }
 }
