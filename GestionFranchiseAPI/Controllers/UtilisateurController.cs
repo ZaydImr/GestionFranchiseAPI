@@ -22,7 +22,7 @@ namespace GestionFranchiseAPI
         }
 
         // GET a specified user by his login and his password
-        [HttpGet("{login}+{password}")]
+        [HttpGet("login/{login}/{password}")]
         public Utilisateur Get(string login,string password)
         {
             Utilisateur utilisateur = new GestionFranchiseContext().Utilisateurs.FirstOrDefault(util => util.Login == login );

@@ -32,7 +32,7 @@ namespace GestionFranchiseAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GestionFranchiseAPI", Version = "v1" });
             });
-            services.AddCors(option => option.AddDefaultPolicy(builder => builder.WithOrigins("http://localhost:3000/").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+            services.AddCors(option => option.AddDefaultPolicy(builder => builder.WithOrigins("https://gestion-franchise.netlify.app/").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
